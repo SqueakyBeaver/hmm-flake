@@ -1,1 +1,6 @@
-.direnv
+bin/
+obj/
+result
+*.DotSettings.user
+.idea/
+.analyzerpackages/
