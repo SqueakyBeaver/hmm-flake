@@ -17,8 +17,8 @@
     ] (
       system: let
         pname = "HedgeModManager.UI";
-        version = "8.0.0-beta1";
-        sha256 = "sha256-Aj5hepS6mFcUVhGf9Prjfqd7o6U2lHzwXK33Y3qelgs=";
+        version = "8.0.0-beta2";
+        sha256 = "sha256-cf1luvA2nUT8Y2W9W0ecKDVdszXm//apr4t3RjlH1I4=";
 
         pkgs = import nixpkgs {
           inherit system;
@@ -32,7 +32,7 @@
 
           src = pkgs.fetchFromGitHub {
             owner = "hedge-dev";
-            repo = pname;
+            repo = "HedgeModManager";
             tag = version;
             hash = sha256;
           };
