@@ -27,7 +27,7 @@
         dotnet-sdk = pkgs.dotnetCorePackages.sdk_8_0;
         dotnet-runtime = pkgs.dotnetCorePackages.runtime_8_0;
       in {
-        packages.default = pkgs.buildDotnetModule {
+        packages.default = pkgs.buildDotnetModule rec {
           inherit pname version dotnet-runtime dotnet-sdk;
 
           src = pkgs.fetchFromGitHub {
@@ -40,17 +40,47 @@
           projectFile = "Source/HedgeModManager.UI/HedgeModManager.UI.csproj";
           nugetDeps = ./deps.json;
 
+          desktopItems = [
+            (pkgs.makeDesktopItem {
+              name = pname;
+              exec = meta.mainProgram;
+              type = "Application";
+              icon = "io.github.hedge_dev.hedgemodmanager";
+              desktopName = "Hedge Mod Manager";
+              comment = meta.description;
+              categories = ["Game"];
+              startupWMClass = meta.mainProgram;
+              mimeTypes = [
+                "x-scheme-handler/hedgemm"
+                "x-scheme-handler/hedgemmswa"
+                "x-scheme-handler/hedgemmgens"
+                "x-scheme-handler/hedgemmlw"
+                "x-scheme-handler/hedgemmforces"
+                "x-scheme-handler/hedgemmtenpex"
+                "x-scheme-handler/hedgemmmusashi"
+                "x-scheme-handler/hedgemmrainbow"
+                "x-scheme-handler/hedgemmhite"
+                "x-scheme-handler/hedgemmrangers"
+                "x-scheme-handler/hedgemmmillersonic"
+                "x-scheme-handler/hedgemmmillershadow"
+              ];
+              keywords = [
+                "hedgehog"
+                "mod"
+                "loader"
+                "manager"
+                "sonic"
+              ];
+            })
+          ];
+
           meta = with pkgs.lib; {
+            mainProgram = "HedgeModManager.UI";
+            platforms = ["x86_64-linux"];
             homepage = "https://github.com/hedge-dev/HedgeModManager";
             description = "Multiplatform rewrite of Hedge Mod Manager";
             license = licenses.mit;
           };
-
-          postInstall = ''
-            # Desktop file
-            mkdir -p "$out/share/applications/"
-            cp "$src/flatpak/hedgemodmanager.desktop" "$out/share/applications"
-          '';
         };
 
         apps.default = flake-utils.lib.mkApp {drv = self.packages.${system}.default;};
