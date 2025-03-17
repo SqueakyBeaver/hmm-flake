@@ -45,6 +45,12 @@
             description = "Multiplatform rewrite of Hedge Mod Manager";
             license = licenses.mit;
           };
+
+          postInstall = ''
+            # Desktop file
+            mkdir -p "$out/share/applications/"
+            cp "$src/flatpak/hedgemodmanager.desktop" "$out/share/applications"
+          '';
         };
 
         apps.default = flake-utils.lib.mkApp {drv = self.packages.${system}.default;};
