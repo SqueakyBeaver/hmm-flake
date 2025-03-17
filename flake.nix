@@ -17,8 +17,8 @@
     ] (
       system: let
         pname = "HedgeModManager.UI";
-        version = "8.0.0-beta2";
-        sha256 = "sha256-cf1luvA2nUT8Y2W9W0ecKDVdszXm//apr4t3RjlH1I4=";
+        version = "8.0.0-beta4";
+        sha256 = "sha256-1uwcpeyOxwKI0fyAmchYEMqStF52wXkCZej+ZQ+aFeY=";
 
         pkgs = import nixpkgs {
           inherit system;
