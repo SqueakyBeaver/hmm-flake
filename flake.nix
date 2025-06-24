@@ -16,9 +16,8 @@
       # Nothing else tested
     ] (
       system: let
-        pname = "HedgeModManager.UI";
-        version = "8.0.0-beta4";
-        sha256 = "sha256-1uwcpeyOxwKI0fyAmchYEMqStF52wXkCZej+ZQ+aFeY=";
+        pname = "hedgemodmanager";
+        version = "8.0.0.4";
 
         pkgs = import nixpkgs {
           inherit system;
@@ -30,49 +29,36 @@
         packages.default = pkgs.buildDotnetModule rec {
           inherit pname version dotnet-runtime dotnet-sdk;
 
-          src = pkgs.fetchFromGitHub {
-            owner = "hedge-dev";
-            repo = "HedgeModManager";
-            tag = version;
-            hash = sha256;
+          src = pkgs.fetchgit {
+            url = "https://github.com/hedge-dev/HedgeModManager.git";
+            deepClone = true; # Needed for the fucking stupid nerbank gitversionin
+            rev = "da0b8b40b6e3da31d92ad0c58d683e1588e73eaf";
+            hash = "sha256-RrmFm3Zv5NFn0pn23g7mJaY3RH4g+Wu9/twMFqiwo4A=";
           };
 
           projectFile = "Source/HedgeModManager.UI/HedgeModManager.UI.csproj";
           nugetDeps = ./deps.json;
 
-          desktopItems = [
-            (pkgs.makeDesktopItem {
-              name = pname;
-              exec = meta.mainProgram;
-              type = "Application";
-              icon = "io.github.hedge_dev.hedgemodmanager";
-              desktopName = "Hedge Mod Manager";
-              comment = meta.description;
-              categories = ["Game"];
-              startupWMClass = meta.mainProgram;
-              mimeTypes = [
-                "x-scheme-handler/hedgemm"
-                "x-scheme-handler/hedgemmswa"
-                "x-scheme-handler/hedgemmgens"
-                "x-scheme-handler/hedgemmlw"
-                "x-scheme-handler/hedgemmforces"
-                "x-scheme-handler/hedgemmtenpex"
-                "x-scheme-handler/hedgemmmusashi"
-                "x-scheme-handler/hedgemmrainbow"
-                "x-scheme-handler/hedgemmhite"
-                "x-scheme-handler/hedgemmrangers"
-                "x-scheme-handler/hedgemmmillersonic"
-                "x-scheme-handler/hedgemmmillershadow"
-              ];
-              keywords = [
-                "hedgehog"
-                "mod"
-                "loader"
-                "manager"
-                "sonic"
-              ];
-            })
-          ];
+          dotnetBuildFlags = ["-p:DefineConstants=COMMITBUILD"];
+
+          # From the nixpkgs implementation
+          postPatch = ''
+            substituteInPlace flatpak/hedgemodmanager.desktop --replace-fail "/app/bin/HedgeModManager.UI" "HedgeModManager.UI"
+          '';
+
+          # https://github.com/hedge-dev/HedgeModManager/blob/8.0.0-beta4/flatpak/io.github.hedge_dev.hedgemodmanager.yml#L53-L55
+          postInstall = ''
+            install -Dm644 flatpak/hedgemodmanager.png $out/share/icons/hicolor/256x256/apps/io.github.hedge_dev.hedgemodmanager.png
+            install -Dm644 flatpak/hedgemodmanager.metainfo.xml $out/share/metainfo/io.github.hedge_dev.hedgemodmanager.metainfo.xml
+            install -Dm644 flatpak/hedgemodmanager.desktop $out/share/applications/io.github.hedge_dev.hedgemodmanager.desktop
+          '';
+
+          passthru.updateScript = pkgs.nix-update-script {
+            extraArgs = [
+              "--version"
+              "unstable"
+            ];
+          };
 
           meta = with pkgs.lib; {
             mainProgram = "HedgeModManager.UI";
