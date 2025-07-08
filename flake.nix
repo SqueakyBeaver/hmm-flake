@@ -33,7 +33,7 @@
             url = "https://github.com/hedge-dev/HedgeModManager.git";
             deepClone = true; # Needed for the fucking stupid nerbank gitversionin
             rev = "da0b8b40b6e3da31d92ad0c58d683e1588e73eaf";
-            hash = "sha256-RrmFm3Zv5NFn0pn23g7mJaY3RH4g+Wu9/twMFqiwo4A=";
+            hash = "sha256-WFyr61WoBI4Oxd3WbuY3WT5b7SqXqUUo3ATc4R02g0s=";
           };
 
           projectFile = "Source/HedgeModManager.UI/HedgeModManager.UI.csproj";
