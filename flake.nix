@@ -4,18 +4,13 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-    hmm = {
-      url = "github:hedge-dev/HedgeModManager";
-      flake = false;
-    };
   };
 
   outputs = {
     self,
     nixpkgs,
     flake-utils,
-    hmm
-  }:
+  } @ inputs:
     flake-utils.lib.eachSystem [
       "x86_64-linux"
       # Nothing else tested
@@ -34,12 +29,18 @@
         packages.default = pkgs.buildDotnetModule rec {
           inherit pname version dotnet-runtime dotnet-sdk;
 
-          src = hmm;
+          src = pkgs.fetchgit {
+            url = "https://github.com/hedge-dev/HedgeModManager";
+            hash = "sha256-ApdD9Pr5/ujpvFwmZiZPVQOCWnoxreFgxHKdu6eRis0=";
+            rev = "74984e0813ae547d6b47e40d7432e923fce9ce58";
+            leaveDotGit = true; # Needed for the fucking stupid nerbank gitversionin
+          };
 
           projectFile = "Source/HedgeModManager.UI/HedgeModManager.UI.csproj";
+          # projectFile = "Source/HedgeModManager";
           nugetDeps = ./deps.json;
 
-          dotnetBuildFlags = ["-p:DefineConstants=COMMITBUILD"];
+          dotnetBuildFlags = ["-p:PublicRelease=true"];
 
           # From the nixpkgs implementation
           postPatch = ''

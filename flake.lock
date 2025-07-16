@@ -18,22 +18,6 @@
         "type": "github"
       }
     },
-    "hmm": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1752512209,
-        "narHash": "sha256-jSDgo+x4pXKOKARN9Sc0rqPfVqv5I7k/ojNmU+8KhDc=",
-        "owner": "hedge-dev",
-        "repo": "HedgeModManager",
-        "rev": "74984e0813ae547d6b47e40d7432e923fce9ce58",
-        "type": "github"
-      },
-      "original": {
-        "owner": "hedge-dev",
-        "repo": "HedgeModManager",
-        "type": "github"
-      }
-    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1752480373,
@@ -53,7 +37,6 @@
     "root": {
       "inputs": {
         "flake-utils": "flake-utils",
-        "hmm": "hmm",
         "nixpkgs": "nixpkgs"
       }
     },
