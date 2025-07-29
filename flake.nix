@@ -31,7 +31,7 @@
 
           src = pkgs.fetchgit {
             url = "https://github.com/hedge-dev/HedgeModManager";
-            hash = "sha256-ApdD9Pr5/ujpvFwmZiZPVQOCWnoxreFgxHKdu6eRis0=";
+            hash = "sha256-1QcYWt7BFL2tA8cx3fAGq/XuggO6a1JxWBKMPOsFomU=";
             rev = "74984e0813ae547d6b47e40d7432e923fce9ce58";
             leaveDotGit = true; # Needed for the fucking stupid nerbank gitversionin
           };
